@@ -84,10 +84,12 @@ fun LoginPage(modifier: Modifier = Modifier) {
             visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.size(24.dp))
-        Row(modifier = modifier) {
+        Column(modifier = modifier,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = CenterHorizontally) {
             Button(
                 onClick = {
-                    Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "Login efetuado com sucesso!", Toast.LENGTH_LONG).show()
                     activity?.startActivity(
                         Intent(activity, MainActivity::class.java).setFlags(
                             FLAG_ACTIVITY_SINGLE_TOP
@@ -99,10 +101,21 @@ fun LoginPage(modifier: Modifier = Modifier) {
                 Text("Login")
             }
             Button(
+                onClick = {
+                    activity?.startActivity(
+                        Intent(activity, RegisterActivity::class.java).setFlags(
+                            FLAG_ACTIVITY_SINGLE_TOP
+                        )
+                    )
+                },
+            ) {
+                Text("Não tem uma conta? Registrar")
+            }
+            Button(
                 onClick = { email = ""; password = "" }
             ) {
                 Text("Limpar")
             }
-        }
+            }
     }
 }
