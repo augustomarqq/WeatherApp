@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.weatherapp.ui.HomePage
 import com.weatherapp.ui.ListPage
-import com.weatherapp.ui.MainViewModel
+import com.weatherapp.MainViewModel
 import com.weatherapp.ui.MapPage
 
 @Composable

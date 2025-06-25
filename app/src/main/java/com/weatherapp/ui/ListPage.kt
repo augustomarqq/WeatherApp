@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.weatherapp.model.City
 import androidx.compose.foundation.lazy.items
+import com.weatherapp.MainViewModel
 
 @Composable fun ListPage(
     modifier: Modifier = Modifier,

@@ -1,4 +1,4 @@
-package com.weatherapp.ui
+package com.weatherapp
 
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
