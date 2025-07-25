@@ -67,14 +67,27 @@ class MainViewModel (private val db: FBDatabase,
                 }
             }
 
-    fun loadForecast(name: String) {
-        service.getForecast(name) { apiForecast ->
-            val newCity = _cities[name]!!.copy( forecast = apiForecast?.toForecast())
-            _cities.remove(name)
-            _cities[name] = newCity
-            city = if (city?.name == name) newCity else city
+        fun loadForecast(name: String) {
+            service.getForecast(name) { apiForecast ->
+                val newCity = _cities[name]!!.copy( forecast = apiForecast?.toForecast())
+                _cities.remove(name)
+                _cities[name] = newCity
+                city = if (city?.name == name) newCity else city
+            }
         }
-    }
+
+        fun loadBitmap(name: String) {
+            val city = _cities[name]
+            service.getBitmap(city?.weather!!.imgUrl) {bitmap ->
+                val newCity = city.copy(
+                    weather = city.weather?.copy(
+                        bitmap = bitmap
+                    )
+                )
+                _cities.remove(name)
+                _cities[name] = newCity
+            }
+        }
 
         override fun onUserLoaded(user: FBUser) {
             _user.value = user.toUser()
