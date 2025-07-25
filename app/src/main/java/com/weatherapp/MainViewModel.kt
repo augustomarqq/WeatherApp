@@ -14,6 +14,7 @@ import com.weatherapp.db.fb.FBUser
 import com.weatherapp.db.fb.toFBCity
 import com.weatherapp.model.City
 import com.weatherapp.model.User
+import com.weatherapp.ui.nav.Route
 
 class MainViewModel (private val db: FBDatabase,
     private val service: WeatherService): ViewModel(), FBDatabase.Listener {
@@ -28,6 +29,11 @@ class MainViewModel (private val db: FBDatabase,
 
         private val _user = mutableStateOf<User?> (null)
         val user : User? get() = _user.value
+
+        private var _page = mutableStateOf<Route>(Route.Home)
+        var page: Route
+            get() = _page.value
+            set(tmp) { _page.value = tmp }
 
         init {
             db.setListener(this)

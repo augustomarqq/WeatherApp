@@ -27,6 +27,7 @@ import com.weatherapp.model.City
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.LaunchedEffect
 import com.weatherapp.MainViewModel
+import com.weatherapp.ui.nav.Route
 
 @Composable fun ListPage(
     modifier: Modifier = Modifier,
@@ -50,6 +51,7 @@ import com.weatherapp.MainViewModel
                 Toast.makeText(activity, "${city.name} excluída", Toast.LENGTH_LONG).show()
             }, onClick = {
                 viewModel.city = city
+                viewModel.page = Route.Home
                 Toast.makeText(activity, "${city.name} selecionada", Toast.LENGTH_LONG).show()
             })
         }
