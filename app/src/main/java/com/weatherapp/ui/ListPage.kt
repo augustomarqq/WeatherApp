@@ -49,6 +49,7 @@ import com.weatherapp.MainViewModel
                 viewModel.remove(city)
                 Toast.makeText(activity, "${city.name} excluída", Toast.LENGTH_LONG).show()
             }, onClick = {
+                viewModel.city = city
                 Toast.makeText(activity, "${city.name} selecionada", Toast.LENGTH_LONG).show()
             })
         }
