@@ -27,9 +27,6 @@ fun MapPage(
     viewModel: MainViewModel
 ) {
     val camPosState = rememberCameraPositionState ()
-    val recife = LatLng(-8.05, -34.9)
-    val caruaru = LatLng(-8.27, -35.98)
-    val joaopessoa = LatLng(-7.12, -34.84)
     val context = LocalContext.current
     val hasLocationPermission by remember {
         mutableStateOf(
@@ -56,29 +53,5 @@ fun MapPage(
                     snippet = it.weather?.desc?:"Carregando...")
             }
         }
-
-        Marker(
-            state = MarkerState(position = recife),
-            title = "Recife",
-            snippet = "Marcador em Recife",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_BLUE)
-        )
-
-        Marker(
-            state = MarkerState(position = caruaru),
-            title = "Caruaru",
-            snippet = "Marcador em Caruaru",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_GREEN)
-        )
-
-        Marker(
-            state = MarkerState(position = joaopessoa),
-            title = "João Pessoa",
-            snippet = "Marcador em João Pessoa",
-            icon = BitmapDescriptorFactory.defaultMarker(
-                BitmapDescriptorFactory.HUE_RED)
-        )
     }
 }
