@@ -56,6 +56,7 @@ class FBDatabase {
     fun setListener(listener: Listener? = null) {
         this.listener = listener
     }
+
     fun register(user: FBUser) {
         if (auth.currentUser == null)
             throw RuntimeException("User is not logged in")
@@ -73,6 +74,7 @@ class FBDatabase {
         db.collection("users").document(uid).collection("cities")
             .document(city.name!!).set(city)
     }
+
     fun remove(city: FBCity) {
         if (auth.currentUser == null)
             throw RuntimeException("User is not logged in")
@@ -82,5 +84,14 @@ class FBDatabase {
         val uid = auth.currentUser!!.uid
         db.collection("users").document(uid).collection("cities")
             .document(city.name!!).delete()
+    }
+
+    fun update(city: FBCity) {
+        if (auth.currentUser == null) throw RuntimeException("Not logged in!")
+        val uid = auth.currentUser!!.uid
+        val changes = mapOf("lat" to city.lat,"lng" to city.lng,
+            "monitored" to city.monitored )
+        db.collection("users").document(uid)
+            .collection("cities").document(city.name!!).update(changes)
     }
 }

@@ -3,6 +3,7 @@ package com.weatherapp.ui
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.weatherapp.model.City
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
@@ -77,16 +80,33 @@ fun CityItem( city: City,
             contentDescription = "Imagem"
         )
         Spacer(modifier = Modifier.size(12.dp))
-        Column(modifier = modifier.weight(1f)) {
+        Column(modifier = Modifier.weight(1f)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = city.name,
+                    fontSize = 22.sp,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+
+                val monitorIcon = if (city.isMonitored) {
+                    Icons.Filled.Notifications
+                } else {
+                    Icons.Outlined.Notifications
+                }
+                Icon(
+                    imageVector = monitorIcon,
+                    contentDescription = if (city.isMonitored) "Monitorada" else "Não monitorada",
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            Spacer(modifier = Modifier.size(4.dp))
             Text(
-                modifier = Modifier,
-                text = city.name,
-                fontSize = 24.sp
-            )
-            Text(
-                modifier = Modifier,
-                text = city.weather?.desc?:"carregando...",
-                fontSize = 16.sp
+                text = city.weather?.desc ?: "carregando...",
+                fontSize = 14.sp
             )
         }
         IconButton(onClick = onClose) {

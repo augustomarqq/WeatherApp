@@ -1,6 +1,7 @@
 package com.weatherapp.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,12 +56,33 @@ fun HomePage(viewModel: MainViewModel) {
                     error = painterResource(id = R.drawable.loading),
                     contentDescription = "Imagem"
                 )
-                Column {
-                    Spacer(modifier = Modifier.size(12.dp))
-                    Text(
-                        text = viewModel.city?.name ?: "Selecione uma cidade...",
-                        fontSize = 28.sp
-                    )
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = viewModel.city?.name ?: "Selecione uma cidade...",
+                            fontSize = 28.sp
+                        )
+                        Spacer(modifier = Modifier.size(12.dp))
+                        val icon = if (viewModel.city!!.isMonitored) {
+                            Icons.Filled.Notifications
+                        } else {
+                            Icons.Outlined.Notifications
+                        }
+
+                        Icon(
+                            imageVector = icon, contentDescription = "Monitorada?",
+                            modifier = Modifier.size(32.dp)
+                                .clickable(enabled = viewModel.city != null) {
+                                    viewModel.update(
+                                        viewModel.city!!.copy(
+                                            isMonitored = !viewModel.city!!.isMonitored
+                                        )
+                                    )
+                                }
+                        )
+                    }
                     Spacer(modifier = Modifier.size(12.dp))
                     Text(
                         text = viewModel.city?.weather?.desc ?: "...",

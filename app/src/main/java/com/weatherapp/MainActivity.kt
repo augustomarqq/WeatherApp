@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = { val name = viewModel.user?.name?:"[não logado]"
-                                    Text("Bem-vindo(a)! $name")
+                                    Text("Bem-vindo(a), $name!")
                                     },
                             actions = {
                                 IconButton( onClick = {
