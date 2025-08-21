@@ -41,7 +41,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.weatherapp.api.WeatherService
 import com.weatherapp.db.fb.FBDatabase
+import com.weatherapp.db.local.LocalDatabase
 import com.weatherapp.monitor.ForecastMonitor
+import com.weatherapp.repo.Repository
 import com.weatherapp.ui.nav.Route
 
 
@@ -51,11 +53,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val currentUserUid = Firebase.auth.currentUser?.uid ?: "anonymous"
             val fbDB = remember { FBDatabase() }
+            val localDB = remember { LocalDatabase(this, "weatherapp_localDB_$currentUserUid") }
+            val repository = remember { Repository(fbDB, localDB) }
             val weatherService = remember { WeatherService() }
             val monitor = remember { ForecastMonitor(this) }
             val viewModel : MainViewModel = viewModel(
-                factory = MainViewModelFactory(fbDB, weatherService, monitor)
+                factory = MainViewModelFactory(repository, weatherService, monitor)
             )
             DisposableEffect(Unit) {
                 val listener = Consumer<Intent> { intent ->
@@ -71,7 +76,7 @@ class MainActivity : ComponentActivity() {
             var showDialog by remember { mutableStateOf(false) }
             val currentRoute = navController.currentBackStackEntryAsState()
             val showButton = currentRoute.value?.destination?.hasRoute(Route.List::class) == true
-            val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(), onResult = {} )
+            val locationLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(), onResult = {} )
             val notificationLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission(), onResult = {} )
             WeatherAppTheme {
                 if (showDialog) {
@@ -119,7 +124,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                        locationLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         MainNavHost(viewModel = viewModel, navController = navController)
                     }
